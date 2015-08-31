@@ -1,0 +1,5 @@
+# Ignore dropbox file
+/.DS_Store
+
+# Ignore certain data files
+/data/song_data.xlsx
