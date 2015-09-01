@@ -21,7 +21,7 @@ svg .axis path, .axis line {
 svg .axis text {
   font-family: sans-serif;
   font-size: 11px;
-  color: gray;
+  fill: gray;
 }
 
 svg .line {
@@ -35,7 +35,7 @@ svg .line-points {
 }
 
 svg .top-bars {
-	fill: steelblue;
+	fill: rgba(34, 111, 159, 1);
 }
 
 div {
@@ -142,9 +142,9 @@ d3.csv("/data/weekly_collabs.csv", function(data) {
 		.attr("cy", function(d) {
 			return yScale(d.collabs);
 		})
-		.attr("r", 5)
+		.attr("r", 8)
 		.attr("fill", function(d) {
-			return "rgba(" + scatterColorScale(d.collabs) + ", 80, 180, 0.5)";
+			return "rgba(" + scatterColorScale(d.collabs) + ", 80, 180, 0.4)";
 		});
 
 	//monthly collabs line
@@ -252,21 +252,48 @@ d3.csv("/data/top_collabs.csv", function(data) {
   });
 
 	xScale.domain([0, d3.max(data, function(d) { return d.num; })]);
-	yScale.domain([0, 19])
+	yScale.domain([0, dataSize - 1])
 
-	topCollabNumsSVG.selectAll("rect")
+  var dataSize = data.length
+  var barHeight = topCollabNumsSVG.style("height").replace("px", "") / dataSize;
+
+	var bar = topCollabNumsSVG.selectAll("g")
 		.data(data)
 		.enter()
-		.append("rect")
+		.append("g")
+		.attr("transform", function(d,i) {
+			return "translate(0," + i * barHeight + ")";
+		});
+
+	bar.append("rect")
 		.attr("x", padding)
-		.attr("y", function(d, i) {
-			return yScale(20 - i);
-		})
 		.attr("width", function(d) {
 			return xScale(d.num);
 		})
-		.attr("height", (svgHeight / 20) - 4)
+		.attr("height", barHeight - 4)
 		.attr("class", "top-bars");
+
+	bar.append("text")
+		.attr("x", function(d) {
+			return xScale(d.num) + (padding / 4);
+		})
+		.attr("y", barHeight / 2)
+		.attr("dy", ".2em")
+		.text(function(d) {
+			return d.num;
+		})
+		.attr("fill", "white");
+
+	bar.append("text")
+		.attr("x", padding + 10)
+		.attr("y", barHeight / 2)
+		.attr("dy", ".2em")
+		.text(function(d) {
+			return d.artist.toUpperCase();
+		})
+		.attr("fill", function(d) {
+			return "rgba(" + (scatterColorScale(d.num) + 25) + ", 225, 250, 1.0)";
+		});
 
 });
 
