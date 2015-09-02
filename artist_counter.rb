@@ -29,7 +29,6 @@ def pull_artists
 
 				# Count number of collabooraters
 				artist_array.unshift(artist_array.length - 1)
-
 				csv << artist_array
 			end
 		end
@@ -88,7 +87,20 @@ def get_top_collaborators(by: 'song_weeks', results: 10)
 	end
 end
 
+# Returns the matrix necessary to create a chord diagram
+def create_chord_matrix(num_artists: 20)
+	chord_matrix = []
+	# Grab artist names only for top 20 collaborators
+	top_artists = get_top_collaborators(by: 'num_songs', results: num_artists).transpose[0]
+	artists_songs = get_artists_songs.keep_if { |i| top_artists.include?(i[0]) }
+	top_artists.each do |artist|
+		artist_array = []
+		# Initialize array with 0's as default num times artist has collabed with others
+		num_artists.times{ artist_array << 0 }
+		p this_artist_songs = artists_songs.keep_if { |i| i[0] == artist}
+	end
+end
 # puts array = get_top_collaborators(by: 'num_songs', results: 20)
 # puts array.length
-puts array = get_top_collaborators(by: 'num_songs', results: 10)
-generate_csv("top_collabs", array, ["artist", "num"])
+# puts array = get_top_collaborators(by: 'num_songs', results: 10)
+p create_chord_matrix(num_artists: 5)
