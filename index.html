@@ -492,34 +492,6 @@ d3.csv("/data/yearly_1_collabs.csv", function(data) {
 
 });
 
-/* 
-d3.csv("/data/artist_counts.csv", function(data) {
-
-	data.forEach(function(d) {
-    d.date = parseDate(d.date);
-  });
-
-	xScale.domain(d3.extent(data, function(d) { return d.date; }));
-  yScale.domain(d3.extent(data, function(d) { return d.num_collaborators}));
-
-	numArtistsSVG.append("path")
-		.datum(data)
-		.attr("class", "line")
-		.attr("stroke-width", "1px")
-		.attr("d", numCollaboratorsLine);
-
-  numArtistsSVG.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + (svgHeight - padding) + ")")
-    .call(xAxis);
-
-	numArtistsSVG.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(" + padding + ",0)")
-    .call(yMonthlyPercentAxis);
-
-});*/
-
 d3.csv("/data/top_uniques.csv", function(data) {
 
 	data.forEach(function(d) {
