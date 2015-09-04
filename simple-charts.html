@@ -4,12 +4,13 @@
 
 <div id="scatterplot"></div>
 <div id="yearly-chart"></div>
-<div id="num-artists-chart"></div>
+<div id="yearly-1-chart"></div>
 <div id="top-collab-nums"></div>
+<div id="top-collab-weeks"></div>
 <style>
 
 text {
-  font: 12px sans-serif;
+  font: 14px sans-serif;
 }
 
 svg .axis path, .axis line {
@@ -20,7 +21,7 @@ svg .axis path, .axis line {
 
 svg .axis text {
   font-family: sans-serif;
-  font-size: 11px;
+  font-size: 14px;
   fill: gray;
 }
 
@@ -32,10 +33,20 @@ svg .line {
 
 svg .line-points {
 	stroke: steelblue;
+	stroke-width: 2px;
 }
 
 svg .top-bars {
-	fill: rgba(34, 111, 159, 1);
+	fill: rgba(65, 145, 205, 1);
+}
+
+svg .lead-bars {
+	fill: rgba(210, 120, 160, 1);
+}
+
+svg .title {
+	fill: rgba(0,0,0,0.7);
+	font: 24px Inconsolata;
 }
 
 div {
@@ -50,8 +61,10 @@ div {
 
 // Basic vars
 var svgWidth = 800;
-var svgHeight = 600;
-var padding = 30;
+var svgHeight = 650;
+var padding = 40;
+var topPadding = 80;
+var shift = 140;
 
 var parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -59,8 +72,11 @@ var parseDate = d3.time.format("%d-%b-%y").parse;
 var xScale = d3.time.scale()
 	.range([padding, svgWidth - padding]);
 
+var barScale = d3.scale.linear()
+	.range([0, svgWidth - (2 * padding) - shift]);
+
 var yScale = d3.scale.linear()
-	.range([svgHeight - padding, padding]);
+	.range([svgHeight - padding, topPadding]);
 
 var scatterColorScale = d3.scale.linear()
 	.domain([0, 10])
@@ -81,10 +97,11 @@ var yAxis = d3.svg.axis()
 	.orient("left")
 	.ticks(11);
 
-var yMonthlyPercentAxis = d3.svg.axis()
+var yPercentAxis = d3.svg.axis()
 	.scale(yScale)
 	.orient("left")
-	.ticks(6);
+	.ticks(6)
+	.tickFormat(d3.format(".0%"));
 
 // Charts
 var percentLine = d3.svg.line()
@@ -106,12 +123,22 @@ var yearlyChartSVG = d3.select("#yearly-chart")
 	.attr("width", svgWidth)
 	.attr("height", svgHeight);
 
+var yearly1ChartSVG = d3.select("#yearly-1-chart")
+	.append("svg")
+	.attr("width", svgWidth)
+	.attr("height", svgHeight);
+
 var numArtistsSVG = d3.select("#num-artists-chart")
 	.append("svg")
 	.attr("width", svgWidth)
 	.attr("height", svgHeight);
 
 var topCollabNumsSVG = d3.select("#top-collab-nums")
+	.append("svg")
+	.attr("width", svgWidth)
+	.attr("height", svgHeight);
+
+var topCollabWeeksSVG = d3.select("#top-collab-weeks")
 	.append("svg")
 	.attr("width", svgWidth)
 	.attr("height", svgHeight);
@@ -147,15 +174,6 @@ d3.csv("/data/weekly_collabs.csv", function(data) {
 			return "rgba(" + scatterColorScale(d.collabs) + ", 80, 180, 0.4)";
 		});
 
-	//monthly collabs line
-	/* svg.selectAll("line")
-		.data(data)
-		.enter()
-		.append("line")
-		.attr("ax", 50)
-
-		.attr("y" 100);*/
-
 	scatterplotSVG.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + (svgHeight - padding) + ")")
@@ -166,13 +184,12 @@ d3.csv("/data/weekly_collabs.csv", function(data) {
     .attr("transform", "translate(" + padding + ",0)")
     .call(yAxis);
 
-   
-
-  //line graph
-  /* svg.append("path")
-		.datum(data)
-		.attr("class", "line")
-		.attr("d", line);*/
+	scatterplotSVG.append("text")
+	  .attr("x", (svgWidth / 2))       
+	  .attr("y", 40)
+	  .attr("text-anchor", "middle")
+	  .attr("class", "title")
+	  .text("Collaborative Songs in the Weekly Top 10");
 });
 
 d3.csv("/data/yearly_collabs.csv", function(data) {
@@ -189,7 +206,7 @@ d3.csv("/data/yearly_collabs.csv", function(data) {
 		.attr("class", "line")
 		.attr("d", percentLine);
 
-	yearlyChartSVG.selectAll("cricle")
+	yearlyChartSVG.selectAll("circle")
   	.data(data)
   	.enter()
   	.append("circle")
@@ -205,6 +222,12 @@ d3.csv("/data/yearly_collabs.csv", function(data) {
 			return "rgba(" + linePointsScale(d.percent) + ", 120, 160, 1.0)";
 		});
 
+	yearlyChartSVG.append("text")
+		.attr("x", svgWidth * 0.55)
+		.attr("y", svgHeight * 0.13)
+		.text("Max at (2003, 50.4%)")
+		.attr("fill", "gray");
+
   yearlyChartSVG.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + (svgHeight - padding) + ")")
@@ -213,7 +236,69 @@ d3.csv("/data/yearly_collabs.csv", function(data) {
 	yearlyChartSVG.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(" + padding + ",0)")
-    .call(yMonthlyPercentAxis);
+    .call(yPercentAxis);
+
+  yearlyChartSVG.append("text")
+	  .attr("x", (svgWidth / 2))     
+	  .attr("y", 40)
+	  .attr("text-anchor", "middle")
+	  .attr("class", "title")
+	  .text("% of Songs in the Top 10 That Are Collaborative");
+
+});
+
+d3.csv("/data/yearly_1_collabs.csv", function(data) {
+
+	data.forEach(function(d) {
+    d.date = parseDate(d.date);
+  });
+
+	xScale.domain(d3.extent(data, function(d) { return d.date; }));
+  yScale.domain(d3.extent(data, function(d) { return d.percent}));
+
+	yearly1ChartSVG.append("path")
+		.datum(data)
+		.attr("class", "line")
+		.attr("d", percentLine);
+
+	yearly1ChartSVG.selectAll("circle")
+  	.data(data)
+  	.enter()
+  	.append("circle")
+  	.attr("cx", function(d) {
+  		return xScale(d.date);
+  	})
+  	.attr("cy", function(d) {
+  		return yScale(d.percent);
+  	})
+  	.attr("r", 8)
+  	.attr("class", "line-points")
+  	.attr("fill", function(d) {
+			return "rgba(" + linePointsScale(d.percent) + ", 120, 160, 1.0)";
+		});
+
+	yearly1ChartSVG.append("text")
+		.attr("x", svgWidth * 0.59)
+		.attr("y", svgHeight * 0.13)
+		.text("Max at (2004, 61.5%)")
+		.attr("fill", "gray");
+
+	yearly1ChartSVG.append("text")
+	  .attr("x", (svgWidth / 2))     
+	  .attr("y", 40)
+	  .attr("text-anchor", "middle")
+	  .attr("class", "title")
+	  .text("% of Number 1 Songs in the Top 10 That Are Collaborative");
+
+  yearly1ChartSVG.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + (svgHeight - padding) + ")")
+    .call(xAxis);
+
+	yearly1ChartSVG.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + padding + ",0)")
+    .call(yPercentAxis);
 
 });
 
@@ -245,56 +330,172 @@ d3.csv("/data/artist_counts.csv", function(data) {
 
 });*/
 
-d3.csv("/data/top_collabs.csv", function(data) {
+d3.csv("/data/top_uniques.csv", function(data) {
 
 	data.forEach(function(d) {
     d.num = +d.num;
+    d.lead = +d.lead;
   });
 
-	xScale.domain([0, d3.max(data, function(d) { return d.num; })]);
+	barScale.domain([0, d3.max(data, function(d) { return d.num; })]);
 	yScale.domain([0, dataSize - 1])
 
   var dataSize = data.length
-  var barHeight = topCollabNumsSVG.style("height").replace("px", "") / dataSize;
+  var barHeight = (topCollabNumsSVG.style("height").replace("px", "") - topPadding) / dataSize;
 
 	var bar = topCollabNumsSVG.selectAll("g")
 		.data(data)
 		.enter()
 		.append("g")
 		.attr("transform", function(d,i) {
-			return "translate(0," + i * barHeight + ")";
+			return "translate(0," + ((i * barHeight) + topPadding) + ")";
 		});
 
 	bar.append("rect")
-		.attr("x", padding)
+		.attr("x", padding + shift)
 		.attr("width", function(d) {
-			return xScale(d.num);
+			//scale the bars to account for the shifts. need to account for shift+padding of x position and also the fact that our svgWidth is flanked by 2 paddings in the scale.
+			return barScale(d.num);
 		})
 		.attr("height", barHeight - 4)
 		.attr("class", "top-bars");
 
+	//draw lead songs
+	bar.append("rect")
+		.attr("x", padding + shift)
+		.attr("width", function(d) {
+			return barScale(d.lead);
+		})
+		.attr("height", barHeight - 4)
+		.attr("class", "lead-bars");
+
+	//write numbers
 	bar.append("text")
 		.attr("x", function(d) {
-			return xScale(d.num) + (padding / 4);
+			return shift + padding/1.5 + barScale(d.num);
 		})
 		.attr("y", barHeight / 2)
 		.attr("dy", ".2em")
+		.style("text-anchor", "end")
 		.text(function(d) {
 			return d.num;
 		})
 		.attr("fill", "white");
 
 	bar.append("text")
-		.attr("x", padding + 10)
+		.attr("x", function(d) {
+			return shift + padding/1.5 + barScale(d.lead);
+		})
 		.attr("y", barHeight / 2)
 		.attr("dy", ".2em")
+		.style("text-anchor", "end")
+		.text(function(d) {
+			return d.lead;
+		})
+		.attr("fill", "rgba(255,255,255,0.4");
+
+	//write artists
+	bar.append("text")
+		.attr("x", padding + shift - 10)
+		.attr("y", barHeight / 2)
+		.attr("dy", ".2em")
+		.style("text-anchor", "end")
 		.text(function(d) {
 			return d.artist.toUpperCase();
 		})
-		.attr("fill", function(d) {
-			return "rgba(" + (scatterColorScale(d.num) + 25) + ", 225, 250, 1.0)";
+		.attr("fill", "gray");
+
+	//title
+	topCollabNumsSVG.append("text")
+	  .attr("x", (svgWidth / 2))     
+	  .attr("y", 40)
+	  .attr("text-anchor", "middle")
+	  .attr("class", "title")
+	  .text("Artists With Most Number of Unique Songs in Top 10");
+});
+
+d3.csv("/data/top_weeks.csv", function(data) {
+
+	data.forEach(function(d) {
+    d.num = +d.num;
+    d.lead = +d.lead;
+  });
+
+	barScale.domain([0, d3.max(data, function(d) { return d.num; })]);
+	yScale.domain([0, dataSize - 1])
+
+  var dataSize = data.length
+  var barHeight = (topCollabWeeksSVG.style("height").replace("px", "") - topPadding) / dataSize;
+
+	var bar = topCollabWeeksSVG.selectAll("g")
+		.data(data)
+		.enter()
+		.append("g")
+		.attr("transform", function(d,i) {
+			return "translate(0," + ((i * barHeight) + topPadding) + ")";
 		});
 
+	bar.append("rect")
+		.attr("x", padding + shift)
+		.attr("width", function(d) {
+			//scale the bars to account for the shifts. need to account for shift+padding of x position and also the fact that our svgWidth is flanked by 2 paddings in the scale.
+			return barScale(d.num);
+		})
+		.attr("height", barHeight - 4)
+		.attr("class", "top-bars");
+
+	//draw lead songs
+	bar.append("rect")
+		.attr("x", padding + shift)
+		.attr("width", function(d) {
+			return barScale(d.lead);
+		})
+		.attr("height", barHeight - 4)
+		.attr("class", "lead-bars");
+
+	//write numbers
+	bar.append("text")
+		.attr("x", function(d) {
+			return shift + padding/1.5 + barScale(d.num);
+		})
+		.attr("y", barHeight / 2)
+		.attr("dy", ".2em")
+		.style("text-anchor", "end")
+		.text(function(d) {
+			return d.num;
+		})
+		.attr("fill", "white");
+
+	bar.append("text")
+		.attr("x", function(d) {
+			return shift + padding/1.5 + barScale(d.lead);
+		})
+		.attr("y", barHeight / 2)
+		.attr("dy", ".2em")
+		.style("text-anchor", "end")
+		.text(function(d) {
+			return d.lead;
+		})
+		.attr("fill", "rgba(255,255,255,0.4");
+
+	//write artists
+	bar.append("text")
+		.attr("x", padding + shift - 10)
+		.attr("y", barHeight / 2)
+		.attr("dy", ".2em")
+		.style("text-anchor", "end")
+		.text(function(d) {
+			return d.artist.toUpperCase();
+		})
+		.attr("fill", "gray");
+
+	//title
+	topCollabWeeksSVG.append("text")
+	  .attr("x", (svgWidth / 2))     
+	  .attr("y", 40)
+	  .attr("text-anchor", "middle")
+	  .attr("class", "title")
+	  .text("Artists With Most Weeks With a Collaborative Song in Top 10");
 });
 
 </script>
