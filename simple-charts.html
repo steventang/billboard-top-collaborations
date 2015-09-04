@@ -372,15 +372,14 @@ d3.csv("/data/top_uniques.csv", function(data) {
 	//write numbers
 	bar.append("text")
 		.attr("x", function(d) {
-			return shift + padding/1.5 + barScale(d.num);
+			return shift + padding * 1.2 + barScale(d.num);
 		})
 		.attr("y", barHeight / 2)
 		.attr("dy", ".2em")
-		.style("text-anchor", "end")
 		.text(function(d) {
 			return d.num;
 		})
-		.attr("fill", "white");
+		.attr("fill", "gray");
 
 	bar.append("text")
 		.attr("x", function(d) {
@@ -404,6 +403,33 @@ d3.csv("/data/top_uniques.csv", function(data) {
 			return d.artist.toUpperCase();
 		})
 		.attr("fill", "gray");
+
+	// Legend
+	topCollabNumsSVG.append("rect")
+		.attr("x", svgWidth * 0.7)
+		.attr("y", svgHeight * 0.7)
+		.attr("width", barHeight - 4)
+		.attr("height", barHeight - 4)
+		.attr("class", "top-bars");
+
+	topCollabNumsSVG.append("rect")
+		.attr("x", svgWidth * 0.7)
+		.attr("y", svgHeight * 0.75)
+		.attr("width", barHeight - 4)
+		.attr("height", barHeight - 4)
+		.attr("class", "lead-bars");
+
+	topCollabNumsSVG.append("text")
+		.attr("x", svgWidth * 0.75)
+		.attr("y", svgHeight * 0.725)
+		.text("Songs where artist was featured")
+		.attr("fill", "rgba(0,0,0,0.7)")
+
+	topCollabNumsSVG.append("text")
+		.attr("x", svgWidth * 0.75)
+		.attr("y", svgHeight * 0.775)
+		.text("Songs where artist was lead")
+		.attr("fill", "rgba(0,0,0,0.7)")
 
 	//title
 	topCollabNumsSVG.append("text")
@@ -456,15 +482,14 @@ d3.csv("/data/top_weeks.csv", function(data) {
 	//write numbers
 	bar.append("text")
 		.attr("x", function(d) {
-			return shift + padding/1.5 + barScale(d.num);
+			return shift + padding * 1.2 + barScale(d.num);
 		})
 		.attr("y", barHeight / 2)
 		.attr("dy", ".2em")
-		.style("text-anchor", "end")
 		.text(function(d) {
 			return d.num;
 		})
-		.attr("fill", "white");
+		.attr("fill", "gray");
 
 	bar.append("text")
 		.attr("x", function(d) {
@@ -488,6 +513,33 @@ d3.csv("/data/top_weeks.csv", function(data) {
 			return d.artist.toUpperCase();
 		})
 		.attr("fill", "gray");
+
+ // Legend
+	topCollabWeeksSVG.append("rect")
+		.attr("x", svgWidth * 0.7)
+		.attr("y", svgHeight * 0.7)
+		.attr("width", barHeight - 4)
+		.attr("height", barHeight - 4)
+		.attr("class", "top-bars");
+
+	topCollabWeeksSVG.append("rect")
+		.attr("x", svgWidth * 0.7)
+		.attr("y", svgHeight * 0.75)
+		.attr("width", barHeight - 4)
+		.attr("height", barHeight - 4)
+		.attr("class", "lead-bars");
+
+	topCollabWeeksSVG.append("text")
+		.attr("x", svgWidth * 0.75)
+		.attr("y", svgHeight * 0.725)
+		.text("Songs where artist was featured")
+		.attr("fill", "rgba(0,0,0,0.7)")
+
+	topCollabWeeksSVG.append("text")
+		.attr("x", svgWidth * 0.75)
+		.attr("y", svgHeight * 0.775)
+		.text("Songs where artist was lead")
+		.attr("fill", "rgba(0,0,0,0.7)")
 
 	//title
 	topCollabWeeksSVG.append("text")

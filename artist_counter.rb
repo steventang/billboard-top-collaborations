@@ -168,7 +168,7 @@ def create_directed_graph_json(num_artists: 5, start_date: '01-Jan-1990')
 	# First, get an array of all [source, collaborator] pairs
 	songs.each do |row|
 		# If at least 2 top artists are in a song
-		if (artists & row[3..-1]).length > 1
+		if (artists & row[3..-1].compact).length > 1
 			# Set source as the first top artist to appear as credited
 			source = row[3..-1].find{ |i| artists.include?(i) }
 			targets = (artists & row[3..-1])
@@ -176,21 +176,23 @@ def create_directed_graph_json(num_artists: 5, start_date: '01-Jan-1990')
 			targets.each { |collaborator| links_array << [source, collaborator] }
 		end
 	end
+	p "LNKS ARRAY #{links_array}"
 	# Turn links_array pairs into hashes
 	links_array.each do |source, target|
-		value = links_array.count{ |pair| pair == [source, target] }
+		value = links_array.count{ |pair| pair == [source, target] || pair == [target, source] } 
 		links << {source: artists.index(source), target: artists.index(target), value: value}
+		puts "created link #{source}, #{target}, #{value}"
 		# Prevent inserting same hash multiple times
-		links_array.delete_if{ |pair| pair ==[source, target] }
+		# links_array.delete_if{ |pair| pair == [source, target] || pair == [target, source] }
 	end
-	p "LINKS: #{links}"
-
+	links = links.uniq
+	p links
 	## CREATE NODES
 	artists.each do |artist|
 		# Assume using 20 colors in D3
-		nodes << {name: artist, group: artists.length * artists.index(artist) / 50 }
+		group = (artists.index(artist).to_f * (8.0 / artists.length.to_f)).round
+		nodes << {name: artist, group: group }
 	end
-	p "NODES: #{nodes}"
 	# Return final json object, turning hashes into pretty json
   output = {nodes: nodes, links: links}
   output.to_json
@@ -217,4 +219,4 @@ end
 # puts array.length
 # puts array = get_top_collaborators(by: 'num_songs', results: 10)
 # p create_chord_matrix(num_artists: 20, start_date: '01-Jan-1990')
-puts create_directed_graph_json(num_artists: 100, start_date: '01-Jan-1990')
+puts create_directed_graph_json(num_artists: 50, start_date: '01-Jan-1990')
