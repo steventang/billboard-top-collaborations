@@ -217,7 +217,7 @@ var directedSVG = d3.select("#directed-graph").append("svg")
   .attr("width", directed20Width)
   .attr("height", directed20Height);
 //Directed Graphs
-d3.json("/data/100_connections.json", function(error, graph) {
+d3.json("100_connections.json", function(error, graph) {
   if (error) throw error;
 
   force
@@ -274,7 +274,7 @@ d3.json("/data/100_connections.json", function(error, graph) {
 	  .attr("y", 40)
 	  .attr("text-anchor", "middle")
 	  .attr("class", "title")
-	  .text("Connections Between Top 50 Collaborators");
+	  .text("Connections Between Top 100 Collaborators");
 });
 
 d3.json("/data/20_connections.json", function(error, graph) {
