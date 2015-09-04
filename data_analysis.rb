@@ -211,12 +211,3 @@ end
 def song_collab_ratio
 	count_unique_collab_songs.to_f / count_all_unique_songs.to_f
 end
-
-# p array = get_top_collaborators(by: 'song_weeks', results: 20).transpose[0]
-# puts '****'
-# p array = count_num_leads(by: 'weeks', artist_array: array)
-# generate_csv("lead_collabs", array, ['artist', 'num'])
-# puts array.length
-# puts array = get_top_collaborators(by: 'num_songs', results: 10)
-# p create_chord_matrix(num_artists: 20, start_date: '01-Jan-1990')
-puts create_directed_graph_json(num_artists: 20, start_date: '01-Jan-1990')
