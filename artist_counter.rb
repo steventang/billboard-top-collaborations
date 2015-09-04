@@ -219,4 +219,4 @@ end
 # puts array.length
 # puts array = get_top_collaborators(by: 'num_songs', results: 10)
 # p create_chord_matrix(num_artists: 20, start_date: '01-Jan-1990')
-puts create_directed_graph_json(num_artists: 50, start_date: '01-Jan-1990')
+puts create_directed_graph_json(num_artists: 20, start_date: '01-Jan-1990')

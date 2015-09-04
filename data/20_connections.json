@@ -1,0 +1,236 @@
+{
+  "nodes": [
+    {
+      "name": "lil wayne",
+      "group": 0
+    },
+    {
+      "name": "ludacris",
+      "group": 0
+    },
+    {
+      "name": "rihanna",
+      "group": 1
+    },
+    {
+      "name": "t-pain",
+      "group": 1
+    },
+    {
+      "name": "kanye west",
+      "group": 2
+    },
+    {
+      "name": "nelly",
+      "group": 2
+    },
+    {
+      "name": "jay-z",
+      "group": 2
+    },
+    {
+      "name": "drake",
+      "group": 3
+    },
+    {
+      "name": "puff daddy",
+      "group": 3
+    },
+    {
+      "name": "akon",
+      "group": 4
+    },
+    {
+      "name": "50 cent",
+      "group": 4
+    },
+    {
+      "name": "lil jon",
+      "group": 4
+    },
+    {
+      "name": "justin timberlake",
+      "group": 5
+    },
+    {
+      "name": "nicki minaj",
+      "group": 5
+    },
+    {
+      "name": "ja rule",
+      "group": 6
+    },
+    {
+      "name": "ciara",
+      "group": 6
+    },
+    {
+      "name": "pitbull",
+      "group": 6
+    },
+    {
+      "name": "snoop dogg",
+      "group": 7
+    },
+    {
+      "name": "usher",
+      "group": 7
+    },
+    {
+      "name": "eminem",
+      "group": 8
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": 17,
+      "value": 1
+    },
+    {
+      "source": 18,
+      "target": 1,
+      "value": 1
+    },
+    {
+      "source": 18,
+      "target": 11,
+      "value": 2
+    },
+    {
+      "source": 11,
+      "target": 1,
+      "value": 1
+    },
+    {
+      "source": 11,
+      "target": 18,
+      "value": 2
+    },
+    {
+      "source": 15,
+      "target": 1,
+      "value": 1
+    },
+    {
+      "source": 9,
+      "target": 19,
+      "value": 1
+    },
+    {
+      "source": 9,
+      "target": 17,
+      "value": 1
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "value": 2
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "value": 1
+    },
+    {
+      "source": 10,
+      "target": 12,
+      "value": 1
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "value": 1
+    },
+    {
+      "source": 6,
+      "target": 0,
+      "value": 1
+    },
+    {
+      "source": 6,
+      "target": 4,
+      "value": 2
+    },
+    {
+      "source": 3,
+      "target": 0,
+      "value": 2
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "value": 2
+    },
+    {
+      "source": 19,
+      "target": 10,
+      "value": 1
+    },
+    {
+      "source": 15,
+      "target": 12,
+      "value": 1
+    },
+    {
+      "source": 6,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 7,
+      "target": 0,
+      "value": 5
+    },
+    {
+      "source": 7,
+      "target": 4,
+      "value": 1
+    },
+    {
+      "source": 7,
+      "target": 19,
+      "value": 1
+    },
+    {
+      "source": 19,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 18,
+      "target": 16,
+      "value": 1
+    },
+    {
+      "source": 0,
+      "target": 7,
+      "value": 5
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "value": 2
+    },
+    {
+      "source": 16,
+      "target": 3,
+      "value": 1
+    },
+    {
+      "source": 7,
+      "target": 13,
+      "value": 1
+    },
+    {
+      "source": 7,
+      "target": 2,
+      "value": 2
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "value": 1
+    }
+  ]
+}

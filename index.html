@@ -1,26 +1,15 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
-<h1>Collaborations in the Billboard Top 10, Jan 1990 - Aug 2015</h1>
-<p>
-	These graphs show data about Billboard Top 10 songs that are collaborations, ie credit more than one artist. For analysis and methodology of this data, please refer to <a href="https://medium.com/@steventang">this blog post</a>
-</p>
-<div id="directed-graph"></div>
-<div id="directed-20-graph"></div>
+
 <div id="scatterplot"></div>
 <div id="yearly-chart"></div>
 <div id="yearly-1-chart"></div>
 <div id="top-collab-nums"></div>
 <div id="top-collab-weeks"></div>
+<div id="directed-graph"></div>
+<div id="directed-20-graph"></div>
 <style>
-
-h1 {
-	font-family: Inconsolata, Courier;
-}
-
-p {
-	font-family: sans-serif;
-}
 
 text {
   font: 14px sans-serif;
@@ -59,7 +48,7 @@ svg .lead-bars {
 
 svg .title {
 	fill: rgba(0,0,0,0.7);
-	font: 24px Inconsolata, Courier;
+	font: 24px Inconsolata;
 }
 
 svg.node {
@@ -216,128 +205,7 @@ var directedSVG = d3.select("#directed-graph").append("svg")
  var directed20SVG = d3.select("#directed-20-graph").append("svg")
   .attr("width", directed20Width)
   .attr("height", directed20Height);
-//Directed Graphs
-d3.json("/data/100_connections.json", function(error, graph) {
-  if (error) throw error;
 
-  force
-    .nodes(graph.nodes)
-    .links(graph.links)
-    .start();
-
-  var link = directedSVG.selectAll(".link")
-    .data(graph.links)
-  .enter().append("line")
-    .attr("class", "link")
-    .style("stroke-width", function(d) { return 2 * d.value; });
-
-  // Create the groups for circle and label
-  var gnodes = directedSVG.selectAll('g.gnode')
-    .data(graph.nodes)
-    .enter()
-    .append('g')
-    .classed('gnode', true);
-
-  var node = gnodes.append("circle")
-    .attr("class", "node")
-    .attr("r", 10)
-    .attr("class", "node-circles")
-    .style("fill", function(d) { return color(d.group); })
-    .call(force.drag);
-
-  // Append the labels to each group
-  var labels = gnodes.append("text")
-    .text(function(d) { return d.name; })
-    .attr("class", "directed-label");
-
-  node.append("title")
-    .text(function(d) { return d.name; });
-
-  link.append("title")
-  	.text(function(d) { return d.value; });
-
-  force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
-
-    // Translate the groups
-    gnodes.attr("transform", function(d) { 
-      return 'translate(' + [d.x, d.y] + ')'; 
-    }); 
-  });
-
-  // title
-  directedSVG.append("text")
-	  .attr("x", (directedWidth / 2))     
-	  .attr("y", 40)
-	  .attr("text-anchor", "middle")
-	  .attr("class", "title")
-	  .text("Connections Between Top 50 Collaborators");
-});
-
-d3.json("/data/20_connections.json", function(error, graph) {
-  if (error) throw error;
-
-  force20
-    .nodes(graph.nodes)
-    .links(graph.links)
-    .start();
-
-  var link = directed20SVG.selectAll(".link")
-    .data(graph.links)
-  .enter().append("line")
-    .attr("class", "link")
-    .style("stroke-width", function(d) { return 2 * d.value; });
-
-  // Create the groups for circle and label
-  var gnodes = directed20SVG.selectAll('g.gnode')
-    .data(graph.nodes)
-    .enter()
-    .append('g')
-    .classed('gnode', true);
-
-  var node = gnodes.append("circle")
-    .attr("class", "node")
-    .attr("r", 10)
-    .attr("class", "node-circles")
-    .style("fill", function(d) { return color(d.group); })
-    .call(force20.drag);
-
-  // Append the labels to each group
-  var labels = gnodes.append("text")
-    .text(function(d) { return d.name; })
-    .attr("class", "directed-label");
-
-  node.append("title")
-    .text(function(d) { return d.name; });
-
-  link.append("title")
-  	.text(function(d) { return d.value; });
-
-  force20.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
-
-    // Translate the groups
-    gnodes.attr("transform", function(d) { 
-      return 'translate(' + [d.x, d.y] + ')'; 
-    }); 
-  });
-
-  // title
-  directed20SVG.append("text")
-	  .attr("x", (directed20Width / 2))     
-	  .attr("y", 40)
-	  .attr("text-anchor", "middle")
-	  .attr("class", "title")
-	  .text("Connections Between Top 20 Collaborators");
-});
-
-// Scatterplot
 d3.csv("/data/weekly_collabs.csv", function(data) {
 
 	data.forEach(function(d) {
@@ -738,6 +606,127 @@ d3.csv("/data/top_weeks.csv", function(data) {
 	  .attr("text-anchor", "middle")
 	  .attr("class", "title")
 	  .text("Artists With Most Weeks With a Collaborative Song in Top 10");
+});
+
+//Directed Graphs
+d3.json("/data/100_connections.json", function(error, graph) {
+  if (error) throw error;
+
+  force
+    .nodes(graph.nodes)
+    .links(graph.links)
+    .start();
+
+  var link = directedSVG.selectAll(".link")
+    .data(graph.links)
+  .enter().append("line")
+    .attr("class", "link")
+    .style("stroke-width", function(d) { return 2 * d.value; });
+
+  // Create the groups for circle and label
+  var gnodes = directedSVG.selectAll('g.gnode')
+    .data(graph.nodes)
+    .enter()
+    .append('g')
+    .classed('gnode', true);
+
+  var node = gnodes.append("circle")
+    .attr("class", "node")
+    .attr("r", 10)
+    .attr("class", "node-circles")
+    .style("fill", function(d) { return color(d.group); })
+    .call(force.drag);
+
+  // Append the labels to each group
+  var labels = gnodes.append("text")
+    .text(function(d) { return d.name; })
+    .attr("class", "directed-label");
+
+  node.append("title")
+    .text(function(d) { return d.name; });
+
+  link.append("title")
+  	.text(function(d) { return d.value; });
+
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+    // Translate the groups
+    gnodes.attr("transform", function(d) { 
+      return 'translate(' + [d.x, d.y] + ')'; 
+    }); 
+  });
+
+  // title
+  directedSVG.append("text")
+	  .attr("x", (directedWidth / 2))     
+	  .attr("y", 40)
+	  .attr("text-anchor", "middle")
+	  .attr("class", "title")
+	  .text("Connections Between Top 50 Collaborators");
+});
+
+d3.json("/data/20_connections.json", function(error, graph) {
+  if (error) throw error;
+
+  force20
+    .nodes(graph.nodes)
+    .links(graph.links)
+    .start();
+
+  var link = directed20SVG.selectAll(".link")
+    .data(graph.links)
+  .enter().append("line")
+    .attr("class", "link")
+    .style("stroke-width", function(d) { return 2 * d.value; });
+
+  // Create the groups for circle and label
+  var gnodes = directed20SVG.selectAll('g.gnode')
+    .data(graph.nodes)
+    .enter()
+    .append('g')
+    .classed('gnode', true);
+
+  var node = gnodes.append("circle")
+    .attr("class", "node")
+    .attr("r", 10)
+    .attr("class", "node-circles")
+    .style("fill", function(d) { return color(d.group); })
+    .call(force20.drag);
+
+  // Append the labels to each group
+  var labels = gnodes.append("text")
+    .text(function(d) { return d.name; })
+    .attr("class", "directed-label");
+
+  node.append("title")
+    .text(function(d) { return d.name; });
+
+  link.append("title")
+  	.text(function(d) { return d.value; });
+
+  force20.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+    // Translate the groups
+    gnodes.attr("transform", function(d) { 
+      return 'translate(' + [d.x, d.y] + ')'; 
+    }); 
+  });
+
+  // title
+  directed20SVG.append("text")
+	  .attr("x", (directed20Width / 2))     
+	  .attr("y", 40)
+	  .attr("text-anchor", "middle")
+	  .attr("class", "title")
+	  .text("Connections Between Top 20 Collaborators");
 });
 </script>
 
