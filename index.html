@@ -217,7 +217,7 @@ var directedSVG = d3.select("#directed-graph").append("svg")
   .attr("width", directed20Width)
   .attr("height", directed20Height);
 //Directed Graphs
-d3.json("100_connections.json", function(error, graph) {
+d3.json("data/100_connections.json", function(error, graph) {
   if (error) throw error;
 
   force
@@ -338,7 +338,7 @@ d3.json("data/20_connections.json", function(error, graph) {
 });
 
 // Scatterplot
-d3.csv("/data/weekly_collabs.csv", function(data) {
+d3.csv("data/weekly_collabs.csv", function(data) {
 
 	data.forEach(function(d) {
     d.date = parseDate(d.date);
@@ -382,7 +382,7 @@ d3.csv("/data/weekly_collabs.csv", function(data) {
 	  .text("Collaborative Songs in the Weekly Top 10");
 });
 
-d3.csv("/data/yearly_collabs.csv", function(data) {
+d3.csv("data/yearly_collabs.csv", function(data) {
 
 	data.forEach(function(d) {
     d.date = parseDate(d.date);
@@ -437,7 +437,7 @@ d3.csv("/data/yearly_collabs.csv", function(data) {
 
 });
 
-d3.csv("/data/yearly_1_collabs.csv", function(data) {
+d3.csv("data/yearly_1_collabs.csv", function(data) {
 
 	data.forEach(function(d) {
     d.date = parseDate(d.date);
@@ -492,7 +492,7 @@ d3.csv("/data/yearly_1_collabs.csv", function(data) {
 
 });
 
-d3.csv("/data/top_uniques.csv", function(data) {
+d3.csv("data/top_uniques.csv", function(data) {
 
 	data.forEach(function(d) {
     d.num = +d.num;
@@ -602,7 +602,7 @@ d3.csv("/data/top_uniques.csv", function(data) {
 	  .text("Artists With Most Number of Unique Songs in Top 10");
 });
 
-d3.csv("/data/top_weeks.csv", function(data) {
+d3.csv("data/top_weeks.csv", function(data) {
 
 	data.forEach(function(d) {
     d.num = +d.num;
