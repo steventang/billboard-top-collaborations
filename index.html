@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
 <meta charset="utf-8">
-<h1>Collaborations in the Billboard Top 10, Jan 1990 - Aug 2015</h1>
-<p>
-	These graphs show data about Billboard Top 10 songs that are collaborations, ie credit more than one artist. For analysis and methodology of this data, please refer to <a href="https://medium.com/@steventang">this blog post</a>
-</p>
-<div id="directed-graph"></div>
-<div id="directed-20-graph"></div>
-<div id="scatterplot"></div>
-<div id="yearly-chart"></div>
-<div id="yearly-1-chart"></div>
-<div id="top-collab-nums"></div>
-<div id="top-collab-weeks"></div>
+<div class="container">
+	<div class="description">
+		<h1>Collaborations in the Billboard Top 10, Jan 1990 - Aug 2015</h1>
+		<p>
+			These graphs show data about Billboard Top 10 songs that are collaborations, ie credit more than one artist. For analysis and methodology of this data, please refer to <a href="https://medium.com/@steventang/visualizing-artist-collaborations-in-the-billboard-top-10-songs-ff6188a0f57b">this blog post</a>
+		</p>
+	</div>
+	<div id="directed-graph"></div>
+	<div id="directed-20-graph"></div>
+	<div id="scatterplot"></div>
+	<div id="yearly-chart"></div>
+	<div id="yearly-1-chart"></div>
+	<div id="top-collab-nums"></div>
+	<div id="top-collab-weeks"></div>
+</div>
 <style>
 
-body {
+div {
 	text-align: center;
+	margin: auto;
 }
 
 h1 {
@@ -24,6 +29,16 @@ h1 {
 
 p {
 	font-family: sans-serif;
+}
+
+.container {
+	width: 90%;
+  min-width: 500px;
+  margin: auto;
+}
+
+.description {
+	max-width: 950px;
 }
 
 text {
@@ -204,7 +219,7 @@ var directed20Width = 800,
 var color = d3.scale.category20c();
 
 var force = d3.layout.force()
-  .charge(-280)
+  .charge(-290)
   .linkDistance(70)
   .size([directedWidth, directedHeight]);
 
@@ -220,6 +235,7 @@ var directedSVG = d3.select("#directed-graph").append("svg")
  var directed20SVG = d3.select("#directed-20-graph").append("svg")
   .attr("width", directed20Width)
   .attr("height", directed20Height);
+
 //Directed Graphs
 d3.json("data/100_connections.json", function(error, graph) {
   if (error) throw error;
@@ -696,15 +712,15 @@ d3.csv("data/top_weeks.csv", function(data) {
 		.attr("class", "lead-bars");
 
 	topCollabWeeksSVG.append("text")
-		.attr("x", svgWidth * 0.75)
+		.attr("x", svgWidth * 0.74)
 		.attr("y", svgHeight * 0.725)
-		.text("Songs where artist was featured")
+		.text("Weeks where artist was featured")
 		.attr("fill", "rgba(0,0,0,0.7)")
 
 	topCollabWeeksSVG.append("text")
-		.attr("x", svgWidth * 0.75)
+		.attr("x", svgWidth * 0.74)
 		.attr("y", svgHeight * 0.775)
-		.text("Songs where artist was lead")
+		.text("Weeks where artist was lead")
 		.attr("fill", "rgba(0,0,0,0.7)")
 
 	//title

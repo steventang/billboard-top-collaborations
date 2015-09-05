@@ -1,7 +1,7 @@
-# this script counts the number of times an artist has done a collaboration in our data
 require 'csv'
 require 'date'
 require 'json'
+
 # Creates a csv that separates out each artist from a collab
 def pull_artists
 	return_array = []
